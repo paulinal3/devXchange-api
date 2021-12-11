@@ -2,6 +2,7 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')
+const methodOverride = require('method-override')
 
 // require route files
 const exampleRoutes = require('./app/routes/example_routes')
@@ -58,6 +59,8 @@ app.use(auth)
 // JS objects before they reach the route files.
 // The method `.use` sets up middleware for the Express application
 app.use(express.json())
+
+app.use(methodOverride('_method'))
 // this parses requests sent by `$.ajax`, which use a different content type
 app.use(express.urlencoded({ extended: true }))
 
