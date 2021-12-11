@@ -30,7 +30,7 @@ const router = express.Router()
 // INDEX
 // GET /problems
 router.get('/problems',  (req, res, next) => {
-	problem.find()
+	Problem.find()
 		.then((problems) => {
 			// `problems` will be an array of Mongoose documents
 			// we want to convert each one to a POJO, so we use `.map` to
@@ -40,7 +40,7 @@ router.get('/problems',  (req, res, next) => {
 		// respond with status 200 and JSON of the problems
 		.then((problems) => res.status(200).json({ problems: problems }))
 		// if an error occurs, pass it to the handler
-		.catch(next)``
+		.catch(next)
 })
 
 // SHOW
@@ -59,9 +59,9 @@ router.get('/problems/:id',  (req, res, next) => {
 // POST /problems
 router.post('/problems',  (req, res, next) => {
 	// set owner of new problem to be current user
-	// req.body.problem.owner = req.user.id ////// UNCOMMENT WHEN USERS MODEL IS LIVE
+	// req.body.problem.owner = req.user.id //////********** UNCOMMENT WHEN USERS MODEL IS LIVE *******
 
-	problem.create(req.body.problem)
+	Problem.create(req.body.problem)
 		// respond to succesful `create` with status 201 and JSON of new "problem"
 		.then((problem) => {
 			res.status(201).json({ problem: problem.toObject() })
@@ -79,12 +79,12 @@ router.patch('/problems/:id',  removeBlanks, (req, res, next) => {
 	// owner, prevent that by deleting that key/value pair
 	delete req.body.problem.owner
 
-	problem.findById(req.params.id)
+	Problem.findById(req.params.id)
 		.then(handle404)
 		.then((problem) => {
 			// pass the `req` object and the Mongoose record to `requireOwnership`
 			// it will throw an error if the current user isn't the owner
-			requireOwnership(req, problem)
+			// requireOwnership(req, problem) /////////// ******* UNCOMMENT WHEN USER MODEL IS LIVE ********
 
 			// pass the result of Mongoose's `.update` to the next `.then`
 			return problem.updateOne(req.body.problem)
@@ -102,7 +102,7 @@ router.delete('/problems/:id',  (req, res, next) => {
 		.then(handle404)
 		.then((problem) => {
 			// throw an error if current user doesn't own `problem`
-			requireOwnership(req, problem)
+			// requireOwnership(req, problem) /////////// ******* UNCOMMENT WHEN USER MODEL IS LIVE ********
 			// delete the problem ONLY IF the above didn't throw
 			problem.deleteOne()
 		})
