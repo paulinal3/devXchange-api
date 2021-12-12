@@ -34,7 +34,7 @@ router.patch('/answers/:id', removeBlanks, (req, res, next) => {
     Answer.findById(req.params.id)
         .then(handle404)
         .then(answer => {
-            return answer.updateOne(req.body.problem)
+            return answer.updateOne(req.body.answer)
         })
         .then(() => res.sendStatus(204))
         .catch(next)
