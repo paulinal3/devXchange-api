@@ -40,4 +40,15 @@ router.patch('/answers/:id', removeBlanks, (req, res, next) => {
         .catch(next)
 })
 
+// delete route for an answer
+router.delete('/answers/:id', (req, res, next) => {
+    Answer.findById(req.params.id)
+        .then(handle404)
+        .then(answer => {
+            answer.deleteOne()
+        })
+        .then(() => res.sendStatus(204))
+        .catch(next)
+})
+
 module.exports = router
