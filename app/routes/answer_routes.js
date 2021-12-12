@@ -10,9 +10,9 @@ const requireToken = passport.authenticate('bearer', { session: false })
 
 // create a post route to add an answer
 router.post('/answers', (req, res, next) => {
-    req.body.answer.owner = req.user.id
+    // req.body.answer.owner = req.user.id
 
-    Answer.create(req.body.example)
+    Answer.create(req.body.answer)
         .then(answer => {
             res.status(201).json({
                 answer: answer.toObject()

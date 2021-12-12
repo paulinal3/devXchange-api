@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
 const userSchema = new mongoose.Schema(
 	{
@@ -22,14 +23,14 @@ const userSchema = new mongoose.Schema(
 			required: true,
 		},
 		token: String,
-		// problems: [{
-		// 	type: Schema.Types.ObjectId,
-		// 	ref: 'Problem'
-		// }],
-		// answers: [{
-		// 	type: Schema.Types.ObjectId,
-		// 	ref: 'Answer'
-		// }]
+		problems: [{
+			type: Schema.Types.ObjectId,
+			ref: 'Problem'
+		}],
+		answers: [{
+			type: Schema.Types.ObjectId,
+			ref: 'Answer'
+		}]
 	},
 	{
 		timestamps: true,
