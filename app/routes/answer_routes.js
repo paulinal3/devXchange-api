@@ -8,9 +8,17 @@ const requireOwnership = customErrors.requireOwnership
 const removeBlanks = require('../../lib/remove_blank_fields')
 const requireToken = passport.authenticate('bearer', { session: false })
 
-// create a post route to add an answer
+// get/index route
+router.get('/answers', (req, res, next) => {
+    // req.body.answer.contributor = req.user.id
+    Answer.find()
+        .then(answers => res.status(200).json({ answers }))
+        .catch(next)
+})
+
+// post route to add an answer
 router.post('/answers', (req, res, next) => {
-    // req.body.answer.owner = req.user.id
+    // req.body.answer.contributor = req.user.id
 
     Answer.create(req.body.answer)
         .then(answer => {
@@ -21,6 +29,15 @@ router.post('/answers', (req, res, next) => {
         .catch(next)
 })
 
-// create a patch route to edit an answer
+// patch route to edit an answer
+router.patch('/answers/:id', removeBlanks, (req, res, next) => {
+    Answer.findById(req.params.id)
+        .then(handle404)
+        .then(answer => {
+            return answer.updateOne(req.body.problem)
+        })
+        .then(() => res.sendStatus(204))
+        .catch(next)
+})
 
 module.exports = router
