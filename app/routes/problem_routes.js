@@ -57,9 +57,9 @@ router.get('/problems/:id',  (req, res, next) => {
 
 // CREATE
 // POST /problems
-router.post('/problems',  (req, res, next) => {
+router.post('/problems', requireToken,  (req, res, next) => {
 	// set owner of new problem to be current user
-	// req.body.problem.owner = req.user.id //////********** UNCOMMENT WHEN USERS MODEL IS LIVE *******
+	req.body.problem.owner = req.user.id 
 
 	Problem.create(req.body.problem)
 		// respond to succesful `create` with status 201 and JSON of new "problem"
@@ -74,7 +74,7 @@ router.post('/problems',  (req, res, next) => {
 
 // UPDATE
 // PATCH /problems/5a7db6c74d55bc51bdf39793
-router.patch('/problems/:id',  removeBlanks, (req, res, next) => {
+router.patch('/problems/:id', requireToken, removeBlanks, (req, res, next) => {
 	// if the client attempts to change the `owner` property by including a new
 	// owner, prevent that by deleting that key/value pair
 	delete req.body.problem.owner
@@ -84,7 +84,7 @@ router.patch('/problems/:id',  removeBlanks, (req, res, next) => {
 		.then((problem) => {
 			// pass the `req` object and the Mongoose record to `requireOwnership`
 			// it will throw an error if the current user isn't the owner
-			// requireOwnership(req, problem) /////////// ******* UNCOMMENT WHEN USER MODEL IS LIVE ********
+			requireOwnership(req, problem) 
 
 			// pass the result of Mongoose's `.update` to the next `.then`
 			return problem.updateOne(req.body.problem)
@@ -97,12 +97,12 @@ router.patch('/problems/:id',  removeBlanks, (req, res, next) => {
 
 // DESTROY
 // DELETE /problems/5a7db6c74d55bc51bdf39793
-router.delete('/problems/:id',  (req, res, next) => {
+router.delete('/problems/:id', requireToken, (req, res, next) => {
 	Problem.findById(req.params.id)
 		.then(handle404)
 		.then((problem) => {
 			// throw an error if current user doesn't own `problem`
-			// requireOwnership(req, problem) /////////// ******* UNCOMMENT WHEN USER MODEL IS LIVE ********
+			requireOwnership(req, problem)
 			// delete the problem ONLY IF the above didn't throw
 			problem.deleteOne()
 		})
