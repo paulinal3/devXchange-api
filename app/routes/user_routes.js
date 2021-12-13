@@ -46,6 +46,8 @@ router.post('/sign-up', (req, res, next) => {
 		.then((hash) => {
 			// return necessary params to create a user
 			return {
+				firstName: req.body.credentials.firstName,
+				lastName: req.body.credentials.lastName,
 				email: req.body.credentials.email,
 				hashedPassword: hash,
 			}
@@ -140,6 +142,13 @@ router.delete('/sign-out', requireToken, (req, res, next) => {
 	req.user
 		.save()
 		.then(() => res.sendStatus(204))
+		.catch(next)
+})
+
+// testing display all users
+router.get('/', (req, res, next) => {
+	User.find()
+		.then(users => res.status(200).json({ users }))
 		.catch(next)
 })
 
