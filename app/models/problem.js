@@ -22,11 +22,11 @@ const problemSchema = new mongoose.Schema(
 			type: Schema.Types.ObjectId,
 			ref: 'Answer'
 		}],
-		// owner: {
-		// 	type: mongoose.Schema.Types.ObjectId,
-		// 	ref: 'User',
-		// 	required: true,
-		// },
+		owner: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'User',
+			required: true,
+		},
 	},
 	{
 		timestamps: true,
