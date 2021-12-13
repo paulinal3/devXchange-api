@@ -23,6 +23,10 @@ router.post('/answers', requireToken, (req, res, next) => {
 
     Answer.create(req.body.answer)
         .then(answer => {
+            // User.findById(req.user.id)
+            // .then(foundUser => {
+            //     foundUser.answers.push(answer)
+            // })
             res.status(201).json({
                 answer: answer.toObject()
             })
