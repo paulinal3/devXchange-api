@@ -17,8 +17,9 @@ router.get('/answers', (req, res, next) => {
 })
 
 // post route to add an answer
-router.post('/answers', (req, res, next) => {
-    // req.body.answer.contributor = req.user.id
+router.post('/answers', requireToken, (req, res, next) => {
+    // set contributor of answer to be the current user 
+    req.body.answer.contributor = req.user.id
 
     Answer.create(req.body.answer)
         .then(answer => {

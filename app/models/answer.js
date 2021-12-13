@@ -7,7 +7,10 @@ const answerSchema = new mongoose.Schema(
             type: String,
             required: true
         },
-        bestAnswer: Boolean,
+        bestAnswer: {
+            type: Boolean,
+            default: false
+        },
         img: String,
         contributor: {
             type: Schema.Types.ObjectId,

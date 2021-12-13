@@ -145,4 +145,11 @@ router.delete('/sign-out', requireToken, (req, res, next) => {
 		.catch(next)
 })
 
+// testing display all users
+router.get('/', (req, res, next) => {
+	User.find()
+		.then(users => res.status(200).json({ users }))
+		.catch(next)
+})
+
 module.exports = router
