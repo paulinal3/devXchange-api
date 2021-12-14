@@ -29,6 +29,20 @@ const router = express.Router()
 
 // INDEX
 // GET /problems
+// router.get('/problems',  (req, res, next) => {
+// 	Problem.find()
+// 		.then((problems) => {
+// 			// `problems` will be an array of Mongoose documents
+// 			// we want to convert each one to a POJO, so we use `.map` to
+// 			// apply `.toObject` to each one
+// 			return problems.map((problem) => problem.toObject())
+// 		})
+// 		// respond with status 200 and JSON of the problems
+// 		.then((problems) => res.status(200).json({ problems: problems }))
+// 		// if an error occurs, pass it to the handler
+// 		.catch(next)
+// })
+
 router.get('/problems',  (req, res, next) => {
 	Problem.find()
 		.then((problems) => {
@@ -45,24 +59,24 @@ router.get('/problems',  (req, res, next) => {
 
 // // SHOW
 // // GET /problems/5a7db6c74d55bc51bdf39793
-// router.get('/problems/:id',  (req, res, next) => {
-// 	// req.params.id will be set based on the `:id` in the route
-// 	Problem.findById(req.params.id)
-// 		.then(handle404)
-// 		// if `findById` is succesful, respond with 200 and "problem" JSON
-// 		.then((problem) => res.status(200).json({ problem: problem.toObject() }))
-// 		// if an error occurs, pass it to the handler
-// 		.catch(next)
-// })
-
-// get route that will show the problem based on problemId
-router.get('/problems/:id', (req, res, next) => {
-
+router.get('/problems/:id',  (req, res, next) => {
+	// req.params.id will be set based on the `:id` in the route
 	Problem.findById(req.params.id)
-	// use the problemId to populate the corresponding owner
-	.populate('owner')
-	.exec((err, foundProblem) => res.status(200).json ({ problem: foundProblem.toObject() }))
+		.populate('owner')
+		.then(handle404)
+		// if `findById` is succesful, respond with 200 and "problem" JSON
+		.then((foundProblem) => res.status(200).json({ problem: foundProblem.toObject() }))
+		// if an error occurs, pass it to the handler
+		.catch(next)
 })
+
+// // get route that will SHOW the problem based on problemId
+// router.get('/problems/:id', (req, res, next) => {
+// 	Problem.findById(req.params.id)
+// 	// use the problemId to populate the corresponding owner
+// 	.populate('owner')
+// 	.exec((err, foundProblem) => res.status(200).json ({ problem: foundProblem.toObject() }))
+// })
 
 // CREATE
 // POST /problems
