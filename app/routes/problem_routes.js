@@ -43,6 +43,11 @@ router.get('/problems',  (req, res, next) => {
 		.catch(next)
 })
 
+// SHOW
+// GET /problems/5a7db6c74d55bc51bdf39793
+router.get('/problems/:id',  (req, res, next) => {
+	// req.params.id will be set based on the `:id` in the route
+
 // // SHOW
 // // GET /problems/5a7db6c74d55bc51bdf39793
 // router.get('/problems/:id',  (req, res, next) => {
@@ -57,13 +62,12 @@ router.get('/problems',  (req, res, next) => {
 
 // get route that will show the problem based on problemId
 router.get('/problems/:id', (req, res, next) => {
+
 	Problem.findById(req.params.id)
 	// use the problemId to populate the corresponding owner
 	.populate('owner')
 	.exec((err, foundProblem) => res.status(200).json ({ problem: foundProblem.toObject() }))
 })
-
-
 
 // CREATE
 // POST /problems
