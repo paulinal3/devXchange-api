@@ -16,6 +16,7 @@ const BadParamsError = errors.BadParamsError
 const BadCredentialsError = errors.BadCredentialsError
 
 const User = require('../models/user')
+const Problem = require('../models/problem')
 
 // passing this as a second argument to `router.<verb>` will make it
 // so that a token MUST be passed for that route to be available
@@ -24,6 +25,24 @@ const requireToken = passport.authenticate('bearer', { session: false })
 
 // instantiate a router (mini app that only handles routes)
 const router = express.Router()
+
+
+// PROFILE
+// GET /profile
+router.get('/profile', requireToken,  (req, res, next) => {
+	Problem.find({owner: req.user.id})
+		.then((problems) => {
+			// `problems` will be an array of Mongoose documents
+			// we want to convert each one to a POJO, so we use `.map` to
+			// apply `.toObject` to each one
+			return problems.map((problem) => problem.toObject())
+		})
+		// respond with status 200 and JSON of the problems
+		.then((problems) => res.status(200).json({ problems: problems }))
+		// if an error occurs, pass it to the handler
+		.catch(next)
+})
+
 
 // SIGN UP
 // POST /sign-up

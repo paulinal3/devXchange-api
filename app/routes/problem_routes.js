@@ -57,6 +57,7 @@ router.get('/problems',  (req, res, next) => {
 
 // get route that will show the problem based on problemId
 router.get('/problems/:id', (req, res, next) => {
+
 	Problem.findById(req.params.id)
 	// use the problemId to populate the corresponding owner
 	.populate('owner')
