@@ -70,14 +70,6 @@ router.get('/problems/:id',  (req, res, next) => {
 		.catch(next)
 })
 
-// // get route that will SHOW the problem based on problemId
-// router.get('/problems/:id', (req, res, next) => {
-// 	Problem.findById(req.params.id)
-// 	// use the problemId to populate the corresponding owner
-// 	.populate('owner')
-// 	.exec((err, foundProblem) => res.status(200).json ({ problem: foundProblem.toObject() }))
-// })
-
 // CREATE
 // POST /problems
 router.post('/problems', requireToken,  (req, res, next) => {
