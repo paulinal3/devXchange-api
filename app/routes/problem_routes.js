@@ -63,8 +63,6 @@ router.get('/problems/:id', (req, res, next) => {
 	.exec((err, foundProblem) => res.status(200).json ({ problem: foundProblem.toObject() }))
 })
 
-
-
 // CREATE
 // POST /problems
 router.post('/problems', requireToken,  (req, res, next) => {
