@@ -29,27 +29,15 @@ const router = express.Router()
 
 // INDEX
 // GET /problems
-// router.get('/problems',  (req, res, next) => {
-// 	Problem.find()
-// 		.then((problems) => {
-// 			// `problems` will be an array of Mongoose documents
-// 			// we want to convert each one to a POJO, so we use `.map` to
-// 			// apply `.toObject` to each one
-// 			return problems.map((problem) => problem.toObject())
-// 		})
-// 		// respond with status 200 and JSON of the problems
-// 		.then((problems) => res.status(200).json({ problems: problems }))
-// 		// if an error occurs, pass it to the handler
-// 		.catch(next)
-// })
-
-router.get('/problems',  (req, res, next) => {
+router.get('/problems', (req, res, next) => {
 	Problem.find()
-		.then((problems) => {
+		.populate('owner', ['firstName', 'lastName'])
+		.then((foundProblems) => {
 			// `problems` will be an array of Mongoose documents
 			// we want to convert each one to a POJO, so we use `.map` to
 			// apply `.toObject` to each one
-			return problems.map((problem) => problem.toObject())
+			return foundProblems.map(problem => problem.toObject() )
+			// return problems.map((problem) => problem.toObject())
 		})
 		// respond with status 200 and JSON of the problems
 		.then((problems) => res.status(200).json({ problems: problems }))
@@ -62,7 +50,8 @@ router.get('/problems',  (req, res, next) => {
 router.get('/problems/:id',  (req, res, next) => {
 	// req.params.id will be set based on the `:id` in the route
 	Problem.findById(req.params.id)
-		.populate('owner')
+		// use the problemId to populate the corresponding owner
+		.populate('owner', ['firstName', 'lastName'])
 		.then(handle404)
 		// if `findById` is succesful, respond with 200 and "problem" JSON
 		.then((foundProblem) => res.status(200).json({ problem: foundProblem.toObject() }))
