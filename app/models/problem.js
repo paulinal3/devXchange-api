@@ -23,7 +23,7 @@ const problemSchema = new mongoose.Schema(
 			ref: 'Answer'
 		}],
 		owner: {
-			type: mongoose.Schema.Types.ObjectId,
+			type: Schema.Types.ObjectId,
 			ref: 'User',
 			required: true,
 		},
