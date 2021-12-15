@@ -25,7 +25,6 @@ router.post('/:problemId/answers', requireToken, (req, res, next) => {
     // set contributor of answer to be the current user 
     req.body.answer.contributor = req.user.id
     const currentUser = req.user
-    // console.log('this is req.params\n', req.params.id)
 
     Answer.create(req.body.answer)
     .then(createdAnswer => {
@@ -34,9 +33,12 @@ router.post('/:problemId/answers', requireToken, (req, res, next) => {
         // save the current user
         currentUser.save()
         .then(createdAnswer => {
+            // find current problem based on id
             Problem.findById(req.params.problemId)
                 .then(foundProblem => {
+                    // push created answer id into the current problems answer arr of obj ref
                     foundProblem.answers.push(createdAnswer._id)
+                    // save the current problem
                     foundProblem.save()
                     res.status(201).json({ answer: createdAnswer.toObject() })
                 })
