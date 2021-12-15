@@ -27,22 +27,22 @@ router.post('/:problemId/answers', requireToken, (req, res, next) => {
     const currentUser = req.user
 
     Answer.create(req.body.answer)
-    .then(createdAnswer => {
-        // push created problem id into the current users answer arr of obj ref
-        currentUser.answers.push(createdAnswer._id)
-        // save the current user
-        currentUser.save()
         .then(createdAnswer => {
-            // find current problem based on id
-            Problem.findById(req.params.problemId)
-                .then(foundProblem => {
-                    // push created answer id into the current problems answer arr of obj ref
-                    foundProblem.answers.push(createdAnswer._id)
-                    // save the current problem
-                    foundProblem.save()
-                    res.status(201).json({ answer: createdAnswer.toObject() })
+            // push created problem id into the current users answer arr of obj ref
+            currentUser.answers.push(createdAnswer._id)
+            // save the current user
+            currentUser.save()
+                .then(createdAnswer => {
+                    // find current problem based on id
+                    Problem.findById(req.params.problemId)
+                        .then(foundProblem => {
+                            // push created answer id into the current problems answer arr of obj ref
+                            foundProblem.answers.push(createdAnswer._id)
+                            // save the current problem
+                            foundProblem.save()
+                            res.status(201).json({ answer: createdAnswer.toObject() })
+                        })
                 })
-            })
         })
         .catch(next)
 })
