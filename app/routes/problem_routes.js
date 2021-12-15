@@ -54,23 +54,24 @@ router.get('/problems/:id',  (req, res, next) => {
 // CREATE
 // POST /problems
 router.post('/problems', requireToken,  (req, res, next) => {
-    // set owner of new problem to be current user
-    req.body.problem.owner = req.user.id 
-    let currentUser = req.user
-    console.log('this is req.user', req.user)
-    Problem.create(req.body.problem)
-        // respond to succesful `create` with status 201 and JSON of new "problem"
-        .then((problem) => {
-            // push created problem id into the current users problem arr of obj ref
-            currentUser.problems.push(problem._id)
-            // save the current user
-            currentUser.save()
-            res.status(201).json({ problem: problem.toObject() })
-        })
-        // if an error occurs, pass it off to our error handler
-        // the error handler needs the error message and the `res` object so that it
-        // can send an error message back to the client
-        .catch(next)
+	// set owner of new problem to be current user
+	req.body.problem.owner = req.user.id 
+	let currentUser = req.user
+	console.log('this is req.user', req.user)
+
+	Problem.create(req.body.problem)
+		// respond to succesful `create` with status 201 and JSON of new "problem"
+		.then((problem) => {
+			// push created problem id into the current users problem arr of obj ref
+			currentUser.problems.push(problem._id)
+			// save the current user
+			currentUser.save()
+			res.status(201).json({ problem: problem.toObject() })
+		})
+		// if an error occurs, pass it off to our error handler
+		// the error handler needs the error message and the `res` object so that it
+		// can send an error message back to the client
+		.catch(next)
 })
 // UPDATE
 // PATCH /problems/5a7db6c74d55bc51bdf39793
