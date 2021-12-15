@@ -31,30 +31,14 @@ const router = express.Router()
 // PROFILE
 // GET /profile using just the user model and populate.
 router.get('/profile', requireToken, (req, res, next) => {
-	User.findOne({_id: req.user.id})
-		.populate({path: 'problems', select: ['title', 'description']})
+	User.findOne({ _id: req.user.id })
+		.populate({ path: 'problems', select: ['title', 'description'] })
 		.populate('answers')
 		// respond with status 200 and JSON of the problems
-		.then((foundUser) => res.status(200).json( foundUser ))
+		.then((foundUser) => res.status(200).json(foundUser))
 		// if an error occurs, pass it to the handler
 		.catch(next)
 })
-
-// GET /profile ATTEMPT NO. 1
-// router.get('/profile', requireToken,  (req, res, next) => {
-// 	Problem.find({owner: req.user.id})
-// 		.then((problems) => {
-// 			// `problems` will be an array of Mongoose documents
-// 			// we want to convert each one to a POJO, so we use `.map` to
-// 			// apply `.toObject` to each one
-// 			return problems.map((problem) => problem.toObject())
-// 		})
-// 		// respond with status 200 and JSON of the problems
-// 		.then((problems) => res.status(200).json({ problems: problems }))
-// 		// if an error occurs, pass it to the handler
-// 		.catch(next)
-// })
-
 
 // SIGN UP
 // POST /sign-up
