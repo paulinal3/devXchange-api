@@ -7,7 +7,6 @@ const handle404 = customErrors.handle404
 const requireOwnership = customErrors.requireOwnership
 const removeBlanks = require('../../lib/remove_blank_fields')
 const requireToken = passport.authenticate('bearer', { session: false })
-const Problem = require('../models/problem')
 
 // get/index route
 router.get('/answers', (req, res, next) => {
@@ -21,25 +20,19 @@ router.get('/answers', (req, res, next) => {
 })
 
 // post route to add an answer
-router.post('/:problemId/answers', requireToken, (req, res, next) => {
+router.post(':id/answers', requireToken, (req, res, next) => {
     // set contributor of answer to be the current user 
     req.body.answer.contributor = req.user.id
-    const currentUser = req.user
-    // console.log('this is req.params\n', req.params.id)
+    
 
     Answer.create(req.body.answer)
-    .then(createdAnswer => {
-        // push created problem id into the current users answer arr of obj ref
-        currentUser.answers.push(createdAnswer._id)
-        // save the current user
-        currentUser.save()
         .then(createdAnswer => {
-            Problem.findById(req.params.problemId)
-                .then(foundProblem => {
-                    foundProblem.answers.push(createdAnswer._id)
-                    foundProblem.save()
-                    res.status(201).json({ answer: createdAnswer.toObject() })
-                })
+            // User.findById(req.user.id)
+            // .then(foundUser => {
+            //     foundUser.answers.push(createdAnswer)
+            // })
+            res.status(201).json({
+                answer: createdAnswer.toObject()
             })
         })
         .catch(next)
