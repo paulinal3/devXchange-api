@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const passport = require('passport')
 const Answer = require('../models/answer')
+const Problem = require('../models/problem')
 const customErrors = require('../../lib/custom_errors')
 const handle404 = customErrors.handle404
 const requireOwnership = customErrors.requireOwnership
@@ -44,7 +45,7 @@ router.get('/:problemId/answers', (req, res, next) => {
 })
 
 // post route to add an answer
-router.post(':id/answers', requireToken, (req, res, next) => {
+router.post('/:problemId/answers', requireToken, (req, res, next) => {
     // set contributor of answer to be the current user 
     req.body.answer.contributor = req.user.id
     // set problem of answer to be the problem id from the url param
@@ -79,7 +80,7 @@ router.patch('/answers/:id', requireToken, removeBlanks, (req, res, next) => {
     Answer.findById(req.params.id)
         .then(handle404)
         .then(foundAnswer => {
-            requireOwnership(req, foundAnswer)
+            requireOwnership(req.user._id, foundAnswer)
             return foundAnswer.updateOne(req.body.answer)
         })
         .then(() => res.sendStatus(204))
