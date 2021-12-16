@@ -80,7 +80,8 @@ router.patch('/answers/:id', requireToken, removeBlanks, (req, res, next) => {
     Answer.findById(req.params.id)
         .then(handle404)
         .then(foundAnswer => {
-            requireOwnership(req.user._id, foundAnswer)
+            console.log('this if found answer\n', foundAnswer)
+            requireOwnership(req, foundAnswer)
             return foundAnswer.updateOne(req.body.answer)
         })
         .then(() => res.sendStatus(204))
