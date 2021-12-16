@@ -26,8 +26,6 @@ const requireToken = passport.authenticate('bearer', { session: false })
 // instantiate a router (mini app that only handles routes)
 const router = express.Router()
 
-
-// PROFILE
 // PROFILE
 // GET /profile using just the user model and populate.
 router.get('/profile', requireToken, (req, res, next) => {
