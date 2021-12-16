@@ -32,8 +32,8 @@ const router = express.Router()
 // GET /profile using just the user model and populate.
 router.get('/profile', requireToken, (req, res, next) => {
 	User.findOne({ _id: req.user.id })
-		.populate({ path: 'problems', select: ['title', 'description'] })
-		.populate('answers')
+		// .populate({ path: 'problems', select: ['title', 'description'] })
+		// .populate('answers')
 		// respond with status 200 and JSON of the problems
 		.then((foundUser) => res.status(200).json(foundUser))
 		// if an error occurs, pass it to the handler
@@ -84,6 +84,8 @@ router.post('/sign-in', (req, res, next) => {
 
 	// find a user based on the email that was passed
 	User.findOne({ email: req.body.credentials.email })
+		.populate({ path: 'problems'})
+		.populate('answers')
 		.then((record) => {
 			// if we didn't find a user with that email, send 401
 			if (!record) {
@@ -168,3 +170,5 @@ router.get('/', (req, res, next) => {
 })
 
 module.exports = router
+
+

@@ -7,7 +7,6 @@ const handle404 = customErrors.handle404
 const requireOwnership = customErrors.requireOwnership
 const removeBlanks = require('../../lib/remove_blank_fields')
 const requireToken = passport.authenticate('bearer', { session: false })
-const Problem = require('../models/problem')
 
 // // get/index route for ALL answers
 // router.get('/answers', (req, res, next) => {
@@ -45,7 +44,7 @@ router.get('/:problemId/answers', (req, res, next) => {
 })
 
 // post route to add an answer
-router.post('/:problemId/answers', requireToken, (req, res, next) => {
+router.post(':id/answers', requireToken, (req, res, next) => {
     // set contributor of answer to be the current user 
     req.body.answer.contributor = req.user.id
     // set problem of answer to be the problem id from the url param
