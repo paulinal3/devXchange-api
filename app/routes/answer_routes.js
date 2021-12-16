@@ -31,10 +31,23 @@ router.get('/answers', requireToken, (req, res, next) => {
         .catch(next)
 })
 
+// get/index route for all answers to a specific problem
+router.get('/:problemId/answer', (req, res, next) => {
+    Answer.find({ problem: req.params.problemId })
+        .then(foundAnswers => {
+            return foundAnswers.map(answer => answer.toObject())
+        })
+        .then(foundAnswers => res.status(200).json({ foundAnswers }))
+        .catch(next)
+})
+
 // post route to add an answer
 router.post('/:problemId/answers', requireToken, (req, res, next) => {
     // set contributor of answer to be the current user 
     req.body.answer.contributor = req.user.id
+    // set problem of answer to be the problem id from the url param
+    req.body.answer.problem = req.params.problemId
+    // console.log('is this the problem id:', req.body.answer.problem)
     const currentUser = req.user
 
     Answer.create(req.body.answer)
