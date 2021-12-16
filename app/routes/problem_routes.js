@@ -27,7 +27,8 @@ const router = express.Router()
 router.get('/problems', (req, res, next) => {
 	Problem.find()
 		.populate('owner', ['firstName', 'lastName'])
-		.then((foundProblems) => {
+		.then(handle404)
+		.then(foundProblems => {
 			// `problems` will be an array of Mongoose documents
 			// we want to convert each one to a POJO, so we use `.map` to
 			// apply `.toObject` to each one
@@ -35,7 +36,7 @@ router.get('/problems', (req, res, next) => {
 			// return problems.map((problem) => problem.toObject())
 		})
 		// respond with status 200 and JSON of the problems
-		.then((problems) => res.status(200).json({ problems: problems }))
+		.then(problems => res.status(200).json({ problems: problems }))
 		// if an error occurs, pass it to the handler
 		.catch(next)
 })
@@ -47,7 +48,6 @@ router.get('/problems/:id', (req, res, next) => {
 	Problem.findById(req.params.id)
 		// use the problemId to populate the corresponding owner
 		.populate('owner', ['firstName', 'lastName'])
-		.populate('answers', 'solution')
 		.then(handle404)
 		// if `findById` is succesful, respond with 200 and "problem" JSON
 		.then((foundProblem) => res.status(200).json({ problem: foundProblem.toObject() }))

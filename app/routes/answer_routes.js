@@ -24,6 +24,7 @@ const Problem = require('../models/problem')
 router.get('/answers', requireToken, (req, res, next) => {
     // req.body.answer.contributor = req.user.id
     Answer.find({ contributor: req.user.id })
+        .then(handle404)
         .then(foundAnswers => {
             return foundAnswers.map(answer => answer.toObject())
         })
@@ -34,6 +35,8 @@ router.get('/answers', requireToken, (req, res, next) => {
 // get/index route for all answers to a specific problem
 router.get('/:problemId/answers', (req, res, next) => {
     Answer.find({ problem: req.params.problemId })
+        .populate('contributor', ['firstName', 'lastName'])
+        .then(handle404)
         .then(foundAnswers => {
             return foundAnswers.map(answer => answer.toObject())
         })
