@@ -45,6 +45,7 @@ router.get('/problems/:id', (req, res, next) => {
 	Problem.findById(req.params.id)
 		// use the problemId to populate the corresponding owner
 		.populate('owner', ['firstName', 'lastName'])
+		.populate('answers', 'solution')
 		.then(handle404)
 		// if `findById` is succesful, respond with 200 and "problem" JSON
 		.then((foundProblem) => res.status(200).json({ problem: foundProblem.toObject() }))
