@@ -32,7 +32,7 @@ router.get('/answers', requireToken, (req, res, next) => {
 })
 
 // get/index route for all answers to a specific problem
-router.get('/:problemId/answer', (req, res, next) => {
+router.get('/:problemId/answers', (req, res, next) => {
     Answer.find({ problem: req.params.problemId })
         .then(foundAnswers => {
             return foundAnswers.map(answer => answer.toObject())
