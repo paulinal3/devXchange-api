@@ -21,6 +21,7 @@ const removeBlanks = require('../../lib/remove_blank_fields')
 const requireToken = passport.authenticate('bearer', { session: false })
 // instantiate a router (mini app that only handles routes)
 const router = express.Router()
+
 // INDEX
 // GET /problems
 router.get('/problems', (req, res, next) => {
@@ -38,6 +39,7 @@ router.get('/problems', (req, res, next) => {
 		// if an error occurs, pass it to the handler
 		.catch(next)
 })
+
 // // SHOW
 // // GET /problems/5a7db6c74d55bc51bdf39793
 router.get('/problems/:id', (req, res, next) => {
@@ -52,6 +54,7 @@ router.get('/problems/:id', (req, res, next) => {
 		// if an error occurs, pass it to the handler
 		.catch(next)
 })
+
 // CREATE
 // POST /problems
 router.post('/problems', requireToken, (req, res, next) => {
@@ -74,6 +77,7 @@ router.post('/problems', requireToken, (req, res, next) => {
 		// can send an error message back to the client
 		.catch(next)
 })
+
 // UPDATE
 // PATCH /problems/5a7db6c74d55bc51bdf39793
 router.patch('/problems/:id', requireToken, removeBlanks, (req, res, next) => {
@@ -94,6 +98,7 @@ router.patch('/problems/:id', requireToken, removeBlanks, (req, res, next) => {
 		// if an error occurs, pass it to the handler
 		.catch(next)
 })
+
 // DESTROY
 // DELETE /problems/5a7db6c74d55bc51bdf39793
 router.delete('/problems/:id', requireToken, (req, res, next) => {

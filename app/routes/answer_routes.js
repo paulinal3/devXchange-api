@@ -9,10 +9,21 @@ const removeBlanks = require('../../lib/remove_blank_fields')
 const requireToken = passport.authenticate('bearer', { session: false })
 const Problem = require('../models/problem')
 
-// get/index route
-router.get('/answers', (req, res, next) => {
+// // get/index route for ALL answers
+// router.get('/answers', (req, res, next) => {
+//     // req.body.answer.contributor = req.user.id
+//     Answer.find()
+//         .then(foundAnswers => {
+//             return foundAnswers.map(answer => answer.toObject())
+//         })
+//         .then(foundAnswers => res.status(200).json({ foundAnswers }))
+//         .catch(next)
+// })
+
+// get/index route for all answers of current user
+router.get('/answers', requireToken, (req, res, next) => {
     // req.body.answer.contributor = req.user.id
-    Answer.find()
+    Answer.find({ contributor: req.user.id })
         .then(foundAnswers => {
             return foundAnswers.map(answer => answer.toObject())
         })
