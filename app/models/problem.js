@@ -5,15 +5,15 @@ const problemSchema = new mongoose.Schema(
 	{
 		title: {
 			type: String,
-			required: true,
+			required: true
 		},
 		description: {
 			type: String,
-			required: true,
+			required: true
 		},
 		solved: {
 			type: Boolean,
-			default: false,
+			default: false
 		},
 		img: {
 			type: String,
@@ -24,12 +24,11 @@ const problemSchema = new mongoose.Schema(
 		}],
 		owner: {
 			type: Schema.Types.ObjectId,
-			ref: 'User',
-			required: true,
+			ref: 'User'
 		},
 	},
 	{
-		timestamps: true,
+		timestamps: true
 	}
 )
 
