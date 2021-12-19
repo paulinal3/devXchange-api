@@ -9,6 +9,8 @@ const requireOwnership = customErrors.requireOwnership
 const removeBlanks = require('../../lib/remove_blank_fields')
 const requireToken = passport.authenticate('bearer', { session: false })
 
+const sanitizeHtml = require('sanitize-html')
+
 // // get/index route for ALL answers
 // router.get('/answers', (req, res, next) => {
 //     // req.body.answer.contributor = req.user.id
@@ -51,6 +53,9 @@ router.post('/:problemId/answers', requireToken, (req, res, next) => {
     // set problem of answer to be the problem id from the url param
     req.body.answer.problem = req.params.problemId
     // console.log('is this the problem id:', req.body.answer.problem)
+
+    // sanitize html for answer.solution
+    req.body.answer.solution = sanitizeHtml(req.body.answer.solution)
     const currentUser = req.user
 
     Answer.create(req.body.answer)
@@ -76,6 +81,9 @@ router.post('/:problemId/answers', requireToken, (req, res, next) => {
 // patch route to edit an answer
 router.patch('/answers/:id', requireToken, removeBlanks, (req, res, next) => {
     delete req.body.answer.contributor
+
+    // sanitize html for answer.solution
+    req.body.answer.solution = sanitizeHtml(req.body.answer.solution)
 
     Answer.findById(req.params.id)
         .then(handle404)

@@ -22,6 +22,9 @@ const requireToken = passport.authenticate('bearer', { session: false })
 // instantiate a router (mini app that only handles routes)
 const router = express.Router()
 
+// instantiate html sanitizer
+const sanitizeHtml = require('sanitize-html')
+
 // INDEX
 // GET /problems
 router.get('/problems', (req, res, next) => {
@@ -63,6 +66,9 @@ router.post('/problems', requireToken, (req, res, next) => {
 	let currentUser = req.user
 	console.log('this is req.user', req.user)
 
+	// sanitize problem.description html
+	req.body.problem.description = sanitizeHtml(req.body.problem.description)
+
 	Problem.create(req.body.problem)
 		// respond to succesful `create` with status 201 and JSON of new "problem"
 		.then((problem) => {
@@ -84,6 +90,10 @@ router.patch('/problems/:id', requireToken, removeBlanks, (req, res, next) => {
 	// if the client attempts to change the `owner` property by including a new
 	// owner, prevent that by deleting that key/value pair
 	delete req.body.problem.owner
+
+	// sanitize problem.description html
+	req.body.problem.description = sanitizeHtml(req.body.problem.description)
+
 	Problem.findById(req.params.id)
 		.then(handle404)
 		.then((problem) => {
