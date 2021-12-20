@@ -44,6 +44,18 @@ router.get('/problems', (req, res, next) => {
 		.catch(next)
 })
 
+// get/index route for all problems of current user
+router.get('/problems/user', requireToken, (req, res, next) => {
+    // req.body.answer.contributor = req.user.id
+    Problem.find({ owner: req.user.id })
+        .then(handle404)
+        .then(foundProblems => {
+            return foundProblems.map(problem => problem.toObject())
+        })
+        .then(foundProblems => res.status(200).json({ foundProblems }))
+        .catch(next)
+})
+
 // // SHOW
 // // GET /problems/5a7db6c74d55bc51bdf39793
 router.get('/problems/:id', (req, res, next) => {
