@@ -3,6 +3,9 @@
 ## Deployed App
 https://devxchange.herokuapp.com/
 
+## Client Repo
+https://github.com/paulinal3/devXchange-client
+
 ## RESTful Routes
 ![Server Routes](devXchange_routes.png)
 
