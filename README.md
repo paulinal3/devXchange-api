@@ -1,13 +1,12 @@
-# express-auth-template
-
-A template for starting projects with `express` as an API. Includes
-authentication and common middlewares.
+# DevXchange Server
 
 ## Deployed App
 https://devxchange.herokuapp.com/
 
-## Installation
+## RESTful Routes
+![Server Routes](devXchange_routes.png)
 
+## Installation
 1. [Download](../../archive/master.zip) this template.
 1. Move the .zip file to your `sei/projects/` directory and Unzip it (creating a
    folder) -- **NOTE:** if the folder was already unzipped, use the `mv` command
@@ -21,7 +20,6 @@ https://devxchange.herokuapp.com/
 2. Once everything is working, make an initial commit.
 
 ## Structure
-
 Dependencies are stored in [`package.json`](package.json).
 
 The most important file for understanding the structure of the template is
@@ -53,7 +51,6 @@ You probably will only need to interact with files in `app/models`,
 to change the name of your app.
 
 ## API
-
 Use this as the basis for your own API documentation. Add a new third-level
 heading for your custom entities, and follow the pattern provided for the
 built-in user authentication documentation.
