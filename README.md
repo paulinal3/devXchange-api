@@ -3,6 +3,9 @@
 A template for starting projects with `express` as an API. Includes
 authentication and common middlewares.
 
+## Deployed App
+https://devxchange.herokuapp.com/
+
 ## Installation
 
 1. [Download](../../archive/master.zip) this template.
