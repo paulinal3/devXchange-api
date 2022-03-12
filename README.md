@@ -1,10 +1,13 @@
-# DevXchange Server
+# DevXchange - Server
 
 ## Deployed App
-https://devxchange.herokuapp.com/
+[DevXchange App](https://devxchange.herokuapp.com/)
 
-## Client Repo
-https://github.com/paulinal3/devXchange-client
+## Client Repository
+[DevXchange React Repository](https://github.com/paulinal3/devXchange-client)
+
+## Collection
+![Mongo Collection](devXchange_collections.png)
 
 ## RESTful Routes
 ![Server Routes](devXchange_routes.png)

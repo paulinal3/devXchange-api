@@ -83,12 +83,12 @@ router.post('/problems', requireToken, (req, res, next) => {
 
 	Problem.create(req.body.problem)
 		// respond to succesful `create` with status 201 and JSON of new "problem"
-		.then((problem) => {
+		.then(createdProblem => {
 			// push created problem id into the current users problem arr of obj ref
-			currentUser.problems.push(problem._id)
+			currentUser.problems.push(createdProblem._id)
 			// save the current user
 			currentUser.save()
-			res.status(201).json({ problem: problem.toObject() })
+			res.status(201).json({ problem: createdProblem.toObject() })
 		})
 		// if an error occurs, pass it off to our error handler
 		// the error handler needs the error message and the `res` object so that it
